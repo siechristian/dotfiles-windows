@@ -16,7 +16,7 @@ Update-Help -Force
 
 ### Package Providers
 Write-Host "Installing Package Providers..." -ForegroundColor "Yellow"
-Get-PackageProvider NuGet -Force | Out-Null
+# Get-PackageProvider NuGet -Force | Out-Null
 # Chocolatey Provider is not ready yet. Use normal Chocolatey
 #Get-PackageProvider Chocolatey -Force
 #Set-PackageSource -Name chocolatey -Trusted
@@ -38,24 +38,16 @@ if ((which cinst) -eq $null) {
 
 # system and cli
 choco install curl                --limit-output
-choco install nuget.commandline   --limit-output
 choco install webpi               --limit-output
 choco install git.install         --limit-output -params '"/GitAndUnixToolsOnPath /NoShellIntegration"'
 choco install nvm.portable        --limit-output
 choco install python              --limit-output
-choco install ruby                --limit-output
 
 #fonts
 choco install sourcecodepro       --limit-output
 
-# browsers
-choco install GoogleChrome        --limit-output; <# pin; evergreen #> choco pin add --name GoogleChrome        --limit-output
-choco install GoogleChrome.Canary --limit-output; <# pin; evergreen #> choco pin add --name GoogleChrome.Canary --limit-output
-choco install Firefox             --limit-output; <# pin; evergreen #> choco pin add --name Firefox             --limit-output
-choco install Opera               --limit-output; <# pin; evergreen #> choco pin add --name Opera               --limit-output
 
 # dev tools and frameworks
-choco install atom                --limit-output; <# pin; evergreen #> choco pin add --name Atom                --limit-output
 choco install Fiddler             --limit-output
 choco install vim                 --limit-output
 choco install winmerge            --limit-output
@@ -90,33 +82,16 @@ Enable-WindowsOptionalFeature -Online -All -FeatureName `
     "IIS-WindowsAuthentication" `
     -NoRestart | Out-Null
 
-# ASP.NET Base Configuration
-Enable-WindowsOptionalFeature -Online -All -FeatureName `
-    "NetFx3", `
-    "NetFx4-AdvSrvs", `
-    "NetFx4Extended-ASPNET45", `
-    "IIS-NetFxExtensibility", `
-    "IIS-NetFxExtensibility45", `
-    "IIS-ASPNET", `
-    "IIS-ASPNET45" `
-    -NoRestart | Out-Null
 
-# Web Platform Installer for remaining Windows features
-webpicmd /Install /AcceptEula /Products:"UrlRewrite2"
+
 
 ### Node Packages
 Write-Host "Installing Node Packages..." -ForegroundColor "Yellow"
 if (which npm) {
     npm update npm
     npm install -g gulp
-    npm install -g mocha
     npm install -g node-inspector
     npm install -g yo
 }
 
-### Janus for vim
-Write-Host "Installing Janus..." -ForegroundColor "Yellow"
-if ((which curl) -and (which vim) -and (which rake) -and (which bash)) {
-    curl.exe -L https://bit.ly/janus-bootstrap | bash
-}
 
